@@ -19,6 +19,7 @@ mongoose.connect(dbUrl)
 
 // Middleware
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.json())
 
 app.get('/', (req, res) => {
     res.render('index', { title: 'Home' })
