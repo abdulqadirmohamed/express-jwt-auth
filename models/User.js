@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require("bcrypt")
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -14,14 +15,11 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Fire function afte doc saved
-userSchema.post('save', function(doc, next){
-    console.log('New user was created and saved')
-    next()
-})
 
 // Fire function before doc save
-userSchema.pre('save', function(next){
+userSchema.pre('save', async function(next){
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt)
     next()
 })
 const User = mongoose.model('user', userSchema);
